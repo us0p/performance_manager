@@ -15,6 +15,8 @@ type DB struct {
 
 func NewDB() (*DB, error) {
 	var db DB
+
+	// Reading database pass from compose secret file. Check compose file for more info
 	pass, err := os.ReadFile("/run/secrets/db_password")
 	if err != nil {
 		return &db, err
