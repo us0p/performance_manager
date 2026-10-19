@@ -1,0 +1,86 @@
+name: performance_manager
+
+# backed by a set of container, run by the platform according to replication requirements.
+# map of keys (service names) to values (service definitions)
+# alpine, bookworm, trixie
+services:
+    db:
+      # the image tag is read as: x:y-z, where:
+      # x = image name
+      # y = version
+      # z = base OS
+      #   alpine = very small linux distribution containing only necessary to run base image (might not support extra dependencies out of the box).
+      #   bullseye = Codename for Debian 11
+      #   bookworm = Codename for Debian 12
+      #   trixie = Codename for Debian 13
+      #   slim = Debian-based with most extras removed, Middle ground between full debian and Alpine
+      image: postgres:18.6
+      # Interpolates ${VAR} from environment or .env file.
+      # ${VAR:-default} is used to set a default value when VAR is unset or empty
+      restart: ${RESTART_POLICY:-no}
+      # Grants access to db secret
+      secrets:
+        - db_password
+      environment:
+        # ${VAR:?message} Stops with a clear error message if variable is unset
+        POSTGRES_USER: ${DB_USER:?MISSING DATABASE USER ENV}
+        POSTGRES_DB: ${DB_DB:?MISSING DATABASE NAME ENV}
+        # Postgres image accepts *_FILE variants, it read the contents from the file
+        POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+      # Define volumes that are accessible by service containers, type, source and target are required.
+      # type volume: named volume managed by Docker. Docker stores data in its own area on the host and you refer to it by name. Common for database (Needs a top level volume declaration).
+      # type bind: A bind mount of a file or directory from the host, referenced by path. Changes are visible on both sides immediately. Common for source code and config files. (Don't need a top-level declaration).
+      # type tmpfs: Temporary filesystem kept in the host's memory. Nothing is written to disk, and data disappears when container stops. Works only on linux hosts.
+      # type npipe: Named pipe on Windows, which lets a container talk to the Docker daemon. Used mainly on Windows hosts when the container needs access to the Docker API.
+      volumes:
+        - type: volume
+          source: db-data
+          target: /var/lib/postgresql
+      # declares a check that's run to determine whether or not the service containers are "healthy".
+      # Health check will first run 'interval'(default 30s) seconds after the container is started and then again 'interval' seconds after each previous check.
+      # During 'start_period'(default 0s), health checks run at 'start_interval'(default 5s) frequency. 'retries' defaults to 3. 'timeout' defaults to 30s
+      healthcheck:
+        # ${DB_USER}/${DB_DB} are filled in by Compose from .env when the file is read. This means .env file with DB_USER and DB_DB must be available BEFORE running compose command.
+        # Since this variable replacement is performed during compose execution, we can use exec form instead of shell form.
+        test: ["CMD", "pg_isready", "-h", "127.0.0.1", "-U", "${DB_USER}", "-d", "${DB_DB}"]
+        interval: 10s
+        timeout: 10s
+        start_period: 30s
+
+
+    server:
+      # Alternative way to 'image' option. Tells compose how to build an application from source, usually from a Dockerfile.
+      # When 'build' is a string. The path is used as Docker context to execute the build. Docker will look for a 'Dockerfile' at the root of the directory by default.
+      build: ./
+      # define the port mappings between the host machine and containers. Allows external access to services running inside containers.
+      # Short syntax is [HOST:]CONTAINER[/PROTOCOL], where HOST is [IP:](port|range), CONTAINER is port | range, and PROTOCOL restricts ports to specified protocol tcp(default) or udp
+      ports: 
+        - "0.0.0.0:8000:8000"
+      restart: ${RESTART_POLICY:-no}
+      # Grants access to db secret
+      secrets:
+        - db_password
+      # control the order of service startup and shutdown. With short syntax, Compose doesn't wait for dependencies to be "healthy" before starting a dependent service.
+      depends_on:
+        # long syntax
+        db:
+          # defines how the dependency is considered satisfied
+          condition: service_healthy
+          # Compose will restart this service after it updates the dependency service.
+          restart: true
+      # Specify one or more files that contain environment variables to be passed to the containers.
+      # long form, allow for safer checks.
+      env_file: 
+        - path: ./.env.server
+          required: true # default, with this, compose will fail and warn that we're missing the config file.
+
+# A secret is placed as a file at '/run/secrets/<name>', only in the services you grant it to. It doesn't appear in docker inspect's list of environment variables, and only code that deliberately opens the file can read it.
+secrets:
+  # Secret name
+  db_password:
+    # Where secret comes from, in this case is from ENV but could be from a file 
+    # 'environment' needs the variable name and not the value, so we can't do the interpolation + check here.
+    environment: DB_PASSWORD
+
+volumes:
+  db-data:

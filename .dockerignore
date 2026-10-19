@@ -1,0 +1,9 @@
+# This files leaves the listed files out of the build process
+docs
+*.md
+
+# Adding the .env here only leaves it out of the build but when compose starts it still loads them as variables for ${...} interpolations.
+.env
+.env.*
+
+.git

@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS category (
+    id UUID PRIMARY KEY,
+    user_id UUID NOT NULL REFERENCES app_user (id),
+    name VARCHAR NOT NULL UNIQUE
+);
