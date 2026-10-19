@@ -53,6 +53,7 @@ COPY --from=builder /bin/performance_manager /bin/performance_manager
 USER app
 WORKDIR /app
 COPY --from=builder /app/migrations ./migrations
+COPY --from=builder /app/templates ./templates
 
 # Informs Docker that the container listens on the specified port at runtime.
 # Doesn't actually publish the port. It serves as documentation between the person who builds the image and the person who runs the container.

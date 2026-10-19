@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"html/template"
 	"log"
 	"net/http"
 	"performance_manager/src/database"
@@ -22,11 +23,18 @@ func main() {
 	}
 	log.Println("Migrations applied!")
 
+	tpl, err := template.ParseFiles("templates/index.html")
+	if err != nil {
+		log.Fatal("%s: failed to load template.\n", err)
+	}
+
 	server := http.NewServeMux()
 
 	server.HandleFunc("/", func(res http.ResponseWriter, req *http.Request) {
-		fmt.Fprintf(res, "Hello, world!")
-		return
+		if tpl.Execute(res, nil) != nil {
+			log.Println(err)
+			http.Error(res, "Failed to excute template", http.StatusInternalServerError)
+		}
 	})
 
 	fmt.Println("Starting server on port :8000")
