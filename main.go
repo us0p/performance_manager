@@ -37,6 +37,8 @@ func main() {
 		}
 	})
 
+	server.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+
 	fmt.Println("Starting server on port :8000")
 
 	http.ListenAndServe(":8000", server)
