@@ -1,0 +1,24 @@
+# This compose file extends the server definition in the final prd docker-compose.yml file.
+# It adds support for hot reload on code changes.
+# It doesn't affect the deploy of the application in prd (can still be deployed with docker compose up only).
+# In dev we can pass the -f option to docker compose command to target specific files. Multiple -f declarations cause the files to be merged.
+# So in dev we should run docker compose -f docker-compose.yml -f docker-compose.dev.yml up in order to correctly target our dev setup.
+services:
+  server:
+    build:
+      # here we're targeting only the dev stage in the Dockerfile.
+      # This will override the default compose file which targets the prd stage on normal compose execution
+      # Allowing us to target dev stage in development
+      target: dev
+    volumes:
+      # live source code from the host. It's a bind mount so that changes are visible immediately in the container (necessary for hot reload).
+      - type: bind   
+        source: ./
+        target: /app
+      # keeps downloaded modules across restarts. It's a named volume so that downloaded modules are cached avoiding modules download on every container restart.
+      - type: volume 
+        source: go-mod-cache
+        target: /go/pkg/mod
+
+volumes:
+  go-mod-cache:

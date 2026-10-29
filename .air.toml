@@ -1,0 +1,12 @@
+root = "."
+tmp_dir = "tmp"
+
+[build]
+# the container is owned by root and the files on the host are owned by the host user.
+# git refuses to read a repository owned by another user (root reads host user) so go build can't read the VCS info.
+# we add -buildvcs=false to avoid this in dev as we don't need to embed the commit hash.
+cmd = "go build -buildvcs=false -o ./tmp/server ."
+entrypoint = ["./tmp/server"]
+include_ext = ["go", "html"]
+exclude_dir = ["tmp", "migrations"]
+

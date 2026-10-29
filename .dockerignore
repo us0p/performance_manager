@@ -1,4 +1,4 @@
-# This files leaves the listed files out of the build process
+# This files leaves the listed files out of the build process.
 docs
 *.md
 
@@ -7,3 +7,6 @@ docs
 .env.*
 
 .git
+
+# Air tmp directory, adding to avoid it getting in build context.
+tmp/

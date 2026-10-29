@@ -36,8 +36,21 @@ RUN --mount=type=cache,target=/go/pkg/mod  \
 	--mount=type=cache,target=/root/.cache/go-build \
 	CGO_ENABLED=0 GOOS=linux go build -trimpath -ldflags="-s -w" -o /bin/performance_manager .
 
+# Stage for dev setup only, can be targeted in development environment by passing --target option to Docker.
+# A normal run without --target will build the file's last stage and its dependencies. By making our last stage independent to this dev stage we can make sure that PRD and DEV builds are separate.
+# In dev we can pass --target dev and only the dev stage and its dependencies will be built, avoiding our PRD setup locally.
+# 
+# NOTE: source files are copied to the container in the builder stage but shadowed by compose for live code changes.
+FROM builder AS dev
+
+RUN --mount=type=cache,target=/go/pkg/mod go install github.com/air-verse/air@v1.67.4
+
+EXPOSE 8000
+
+CMD ["air"]
+
 # Multi-stage build, copies only the binary once ready
-FROM alpine:3.24.2
+FROM alpine:3.24.2 AS prd
 
 # Needed for outbound HTTPS/TLS connections
 RUN apk add --no-cache ca-certificates

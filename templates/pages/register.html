@@ -1,0 +1,32 @@
+<!-- This is a named template. It can be used as input for any other template with a block "body". It allows this templated to be reused -->
+<!-- A template is just a text with actions. Actions go inside the {{"{}"}} braces-->
+<!-- actions are evaluated against data, for example: {{".Name"}} will read the Name attribute of the provided data when calling Execute(w, data)-->
+{{define "body"}}
+<form method="post" action="/register">
+	<div>
+		<!-- always add id to your input so that you can point the right label to it. The 'for' attribute indicates which input this label is associated with -->
+		<!-- if the user clicks the label, it'll redirect the user cursor to the target input. It improves usability -->
+		<label for="name-input">Name</label>
+		<!-- always add the necessary input properties:
+		    name: is the name of the attribute the form will use when sending data to the server.
+		    type: helps with usability, for example, in mobile the keyboard will change depending on the type.
+		-->
+		<input id="name-input" name="name" type="text" autocomplete="name" />
+	</div>
+	<div>
+		<label for="email-input">E-mail</label>
+		<input id="email-input" name="email" type="email" autocomplete="email" />
+	</div>
+	<div>
+		<label for="password-input">Password</label>
+		<!-- autocomplete new-password tells password managers to generatea  new password -->
+		<input id="password-input" name="password" type="password" autocomplete="new-password" />
+	</div>
+	<div>
+		<label for="confirm-password-input">Confirm Password</label>
+		<input id="confirm-password-input" name="confirm_password" type="password" />
+	</div>
+	<!-- couples this button to this form -->
+	<button type="submit">Register</button>
+</form>
+{{end}}
