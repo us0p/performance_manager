@@ -1,0 +1,37 @@
+/*The cascade is an algorithm that defines how element's style combine property values originating from different sources.*/
+/*It defines the origin and layer that takes precedence when declarations exists in more than one origin.*/
+/*This algorithm is what names CSS(Cascading Style Sheet).*/
+/*Basically when a Selector matches an element, the property value from the origin with the highest precedence gets applied*/
+/*CSS comes from different origin types: 
+* 	User-agent stylesheets: browsers have basic stylesheets that give default styles to any document. Some browser let 
+* 		user modify the user-agent styelsheet, but it's an extension and not something to be enforced. Because of 
+* 		that, differences exist between browsers. Usually, developers apply the CSS reset stylesheet to bring all 
+* 		the properties to a common ground between browsers to only them start applying styles.
+* 	Author stylesheets:
+* 		- styles written by web developers.
+* 		- take precedence over user-agent styles, regardless of the specificity of the selector.
+* 	User stylesheets:
+* 		- Styles defined by the end user. Most browsers allow users to specify their own stylesheets to define their
+* 		own themes.
+* Even though they come from different origins, they overlap in terms of their default scope.*/
+/*Cascading Order:
+* 1. Relevance: It first filters the rules from all the sources to keep only the rules that apply to a given element.
+* 2. Origin and importance: Sorts each rule according to their importance:
+* 	| Precedence Order (low to high) | Origin                    | Importance     |
+* 	| ------------------------------ | ------------------------- | -------------- \
+* 	| 1                              | user-agent (browser)      | normal         |
+* 	| 2                              | user                      | normal         |
+* 	| 3                              | author (developer)        | normal         |
+* 	| 4                              | CSS keyframe animations   |                |
+* 	| 5                              | author (developer)        | !important     |
+* 	| 6                              | user                      | !important     |
+* 	| 7                              | user-agent (browser)      | !important     |
+* 	| 8                              | CSS transition            |                |
+* 
+* 3. Specificity: In case of equality between origins, the specificity of the rules are compared. The rule with the 
+* 	highest specificity wins.
+* 4. Scoping proximity: When two selectors in an origin with the same precedence have the same specificity. The property
+* 	value within scoped rules with the smallest number of hopsup the DOM hierarchy to the scope root wins.
+* 5. Order of appearance: In the origin with precedence, if there are competing values for a property that are in style 
+* 	block matching selectors of equal specificity and scoping proximity, the last declaration in style order is applied.
+* */
