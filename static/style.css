@@ -1,6 +1,7 @@
 /*QUESTIONS
 * - what is a layer?
 * - What is a at-rule?
+* - Understand the last line of sticky positioning rule
 * */
 
 /*The cascade is an algorithm that defines how element's style combine property values originating from different sources.*/
@@ -89,13 +90,6 @@
 */
 
 /*
-* Specificity
-* - An element selector is less specific. It select all the elements of that type that appear on a page.
-* - A class selector is more specific. It select only the elements in a page that are part of the defined class.
-* - ID selector is even more specific. It only select a single specific element with the provided id.
-*/
-
-/*
 * Selectors
 * - There are over 80 selectors and combinators. They can be grouped based on the type of elements they can select:
 * 	- Basic Selectors:
@@ -121,6 +115,30 @@
 * 			the following namespace: `@namespace SVG url('...');`, you can include selectors that target elements nested in an SVG namespace only. `SVG|a` match links withing SVGs and not those
 * 			in the rest of the document. It's useful to target MathML, SVG, or other XML-based content within your HTML.
 * - Selectors can be nested to improve readability using or not the `&` nesting selector. E.g.: h2 { & + p {} } (is the same as h2 + p {})
+*/
+
+/*
+* Specificity
+* The specificity value is basically a three-column value of three categories or weights:
+* - A Type selector is less specific. It select all the elements of that type that appear on a page. Includes type and pseudo-element selectors.
+* - A Class selector is more specific. It select only the elements in a page that are part of the defined class. It includes class, attribute and pseudo-class selectors.
+* - An ID selector is even more specific. It only select a single specific element with the provided id.
+*
+* The value represents the count of selector components in each weight category and is written as 'ID - CLASS - TYPE'.
+* > Combinatros are not considered for specificity weight, even if they make the selector more specific.
+*
+* For example:
+* [type="password"],
+* input:focus,
+* :root #myApp input:required {
+* 	color: blue;
+* }
+*
+* - [type="password"] selector has specificity weight of '0-1-0'.
+* - input:focus selector has specificity weight of '0-1-1' (1 from input type selector and 1 from the pseudo-class :focus).
+* - The third selector targets a required input nested in a element with id='myApp'. It's weight is '1-2-1' (1 from the id, 2 from the pseudo-classes and 1 from the type selector input).
+*
+* The specificity weight for competing selectors are compared from left to right. The one with the first highest column value wins. E.g.: 1-0-0 wins over 0-4-0.
 */
 
 /*
@@ -214,4 +232,91 @@
  * 		- `rem`: Is relative to the root element font-size. It represents a percentage of the inherited size with 1 meaning 100% of the original size.
  * 		- `vh`: Respective to the viewport's height. Represents a percentage of the viewport.
  * 		- `vw`: Respective to the viewport's width. Represents a percentage of the viewport.
+ */
+
+/*
+ * Containing Block
+ * Usually the nearest block-level ancestor content area.
+ * The process for identifying the containing block depends entirely on the value of the elements 'position' property.
+ * 1. If position is 'static', 'relative' or 'sticky', the container block is formed by the edge of the 'content box' of the nearest ancestor that is either a block 
+ * 	container or establishes a formatting context (such as a table, flex or grid container).
+ * 2. If position is 'absolute', containing block is formed by the edge of the 'padding box' of the nearest ancestor that has a position other than 'static'.
+ * 3. If position is 'fixed', the containing block is established by the 'viewport' or the page area (in the case of paged media).
+ */
+
+/*
+ * Positions
+ * Determine how an element is positioned in a document.
+ *
+ * Values can be:
+ * - Static: Element is positioned according to Normal Flow (top, right, bottom, left and z-index properties have no effect). It's the default value.
+ * - Relative: The element is positioned according to the normal flow of the document (it takes space in the page as if position were 'static'), and then offets are applied 
+ * 	relatively to itself based on values of 'top', 'right', 'bottom', and 'left'. The offset doesn't affect the position of any other elements. This value creates a new 
+ * 	stacking context allowing usage of 'z-index'.
+ * - Absolute: Element is removed from the normal document flow, and no space is created for the element in the page. Element is positioned relative (this is usually where 
+ * 	you'd use 'position: relative') to its closes positioned ancertor or to the initial containing block. Its final position is determined by 'top', 'right', bottom' 
+ * 	and 'left' properties. This value creates a new stacking context allowing usage o 'z-index'.
+ * - Fixed: Element is removed form normal flow and no space is created for it in the page. Element is positioned relative to its initial containing block. Final position 
+ * 	is determined by 'top', 'right', 'bottom', and 'left'.
+ * - Sticky: Positioned in the normal flow of the document, and then offset relative to its nearest scrolling ancestor and containing block elements, based on the values of 
+ * 	'top', 'right', 'bottom', and 'left'. The offset doesn't affect the positioning of any other elements. This values creates a new stacking-context allowing 'z-index' 
+ * 	usage. Note that stick element 'sticks' to its nearest ancertor that has a "scrolling mechanism" (created when 'overflow' is 'hidden', 'scroll', 'auto', or 
+ * 	'overlay', even if that ancestr isn't the nearest actually scroling ancestor.
+ */
+
+/*
+ * Z-Index
+ * Sets the z-order of a positioned element and its descendants or flex and grid items. A larger z-index cover those with a smaller one.
+ * It can accept negative values to lower the priority of the current stacking level.
+ *
+ * For a positioned box, is specifies:
+ * 1. The stack level of the box in the current stacking context.
+ * 2. Whether the box establishes a local stacking context. This means that z-indexes of descendants are not compared to the z-indexes of elements outside this element.
+ */
+
+/*
+ * Flow Layout
+ * The normal flow behaves the same in both writting modes (horizontal [eastern writting style] or vertical [western writting style, like Japanese]), meaning that the inline 
+ * and block efects remain, only the orientation of the break changes.
+ *
+ * The writting mode is determined by 'writting-mode', 'direction' and 'text-orientation' properties. It defaults to horizontal mode.
+ *
+ * Float
+ * It places an element on the left or right side of its container. It allows text and inline elements to wrap around it. The element is removed from the normal flow of the 
+ * page, though still reamining a part of the flow. It's shifted to the left, or right, until it touches the edge of its containing box, or another floated element.
+ *
+ * Making multiple elements float will stack then side by side according to the side of the floating. For example, two elements with 'float:left' will stack one at the left of the other.
+ *
+ * A floated element is at least as tall as its tallest nested floated children.
+ *
+ * Multi-Column layout
+ * Allows you to divide content across multiple columns. You can define the number and width of columns, the gap size between columns, and the visual appearance of the 
+ * optional column dividing lines.
+ *
+ * It's activated by adding 'column-count' or 'column-width' property to an element. The columns are anonymous boxes.
+ *
+ * Related properties are:
+ * 	- 'column-fill'
+ *	- 'column-span'
+ *	- 'columns' shorthand for:
+ *		- 'column-count'
+ *		- 'column-height'
+ *		- 'column-width'
+ *	- 'column-wrap'
+ *	- 'column-rule' shorthand:
+ *		- 'column-rule-color'
+ *		- 'column-rule-style'
+ *		- 'column-rule-width'
+ *	- 'gap' shorthand:
+ *		- 'column-gap'
+ *		- 'row-gap'
+ *
+ * Flexbox
+ * - One-dimensional layout method for arranging items in rows or columns.
+ * - Flex items expands to fill additional space or shrink to fir into smaller spaces.
+ * - It allows you to:
+ * 	- Vertically center a block of content inside its parent.
+ * 	- Make all children take up an equal amount of available width/height.
+ * 	- Make all columns in a multiple-column layout adopt the same height even if they contain a different amount of content.
+ * - The 'display:flex' property is set on the parent to make its children to become flex items. The parent becomes a flex container.
  */
