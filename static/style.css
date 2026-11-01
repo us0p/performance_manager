@@ -18,8 +18,11 @@
 * 	User stylesheets:
 * 		- Styles defined by the end user. Most browsers allow users to specify their own stylesheets to define their
 * 		own themes.
-* Even though they come from different origins, they overlap in terms of their default scope.*/
-/*Cascading Order:
+* Even though they come from different origins, they overlap in terms of their default scope.
+*/
+
+/*
+* Cascading Order:
 * 1. Relevance: It first filters the rules from all the sources to keep only the rules that apply to a given element.
 * 2. Origin and importance: Sorts each rule according to their importance:
 * 	| Precedence Order (low to high) | Origin                    | Importance     |
@@ -39,7 +42,9 @@
 * 	value within scoped rules with the smallest number of hopsup the DOM hierarchy to the scope root wins.
 * 5. Order of appearance: In the origin with precedence, if there are competing values for a property that are in style 
 * 	block matching selectors of equal specificity and scoping proximity, the last declaration in style order is applied.
-*
+* /
+
+/*
 * > Note that the important is inverted for important styles:
 * 	- Important styles declared outside of any cascade layer have lower precedence than those declared as part of a layer.
 * 	- Important styles that come in early layers take precedence over important styles declared in subsequent cascade layer.
@@ -48,7 +53,9 @@
 * - Normal styles in a layer take precedence over styles declared in prior layers; with normal styles declared outside of any
 * 	layer taking precedence over normal layered styles regardless of specificity. In summary, a layer has the lowest 
 * 	priority in an origin.
-*
+*/
+
+/*
 * Inline styles
 * - Takes precedence over all the other origins, even from author origin, regarding the specificity of the selector. Normal 
 * 	inline styles don't take precedence over animated or transitioned properties.
@@ -57,20 +64,154 @@
 * 	- important user style
 * 	- important user agent style
 * 	- transitioned property
-*
+* /
+
+/*
 * At-rules
 * - at-rules containing other than declarations, such as @font-face rule containing descriptors, don't participate in the cascade.
 * 	If more than one are identically appropriate, the entire @font-face declarations are compared using step 1, 2 and 4 of the 
 * 	algorithm.
 * - this at-rule can make an entire selector not relevant.
-* 
+*/
+
+/*
 * Inheritance
 * - Some CSS properties by default inherit values set on current element's parent element and some don't.
 * - CSS properties that are inherited: color, font-family, etc.
 * - CSS properties that are not inherited: width, height, etc.
-*
+* - For every property, CSS provider five special universal values:
+* 	- inherit: same as its parent element (turns on inheritance).
+* 	- initial: intial default value of the property.
+* 	- revert: resets the value to browser's default styling rather than defaults applied to the property.
+* 	- rever-layer: resets to the value established in a previous layer.
+* 	- unset: Sets value to its natural value. If the property is naturally inherited it acts like `inherit`, otherwise, it acts like `initial`.
+* - The property `all` can be used to apply any of the inheritance values to almost all properties at once. It's convenient to undo changes made to styles.
+*/
+
+/*
 * Specificity
 * - An element selector is less specific. It select all the elements of that type that appear on a page.
 * - A class selector is more specific. It select only the elements in a page that are part of the defined class.
 * - ID selector is even more specific. It only select a single specific element with the provided id.
+*/
+
+/*
+* Selectors
+* - There are over 80 selectors and combinators. They can be grouped based on the type of elements they can select:
+* 	- Basic Selectors:
+* 		- type: select all elements that have the given HTML type. E.g.: li {}
+* 		- universal: denoted with an `*`, selects all elements. E.g.: * {}
+* 		- class: select all elements with the given class. E.g.: .className {}
+* 		- id: selects an element based on the value of its id attribute. E.g.: #idName {}
+* 	- Attribute selectors:
+* 		- select all elements that contain the specified attribute or the attribute with the given value. E.g: `[type]` will match all elements that 
+* 			have `type` attribute set, and `[type="submit"]` will match any element with type="submit` set. The match is case-insensitive.
+* 	- Pseudo-class selectors:
+* 		- simple selectors, prefixed with a colon `:`, that allow the selection based on state information that is not contained in the document 
+* 			tree. For example, the `a:visited` is a compound select that matches all `a` elements that have been visited by a user.
+* 	- Pseudo-element selectors:
+* 		- Selector prefixed with two columns `::`, represent entities that are not included in HTML. For example, `p::first-line` matches the first line of all `p` elements.
+* 	- Combinators: Allow the combination of selectors to select DOM nodes based on their relationship to other nodes.
+* 		- Descendant: denoted with one or more spaces. Selects nodes that are descendants of the first element. E.g.: div span{}
+* 		- Child: Denoted with `>`, it selects nodes that are direct children of the first element. More specific than descendant combinator. E.g.: div > span {}
+* 		- Subsequent-sibling: Denoted with `~`, select siblings. Given `A ~ B`, all B elements will be selected if they're preceded by `A`, provided `A` and `B` share the same parent.
+* 		- Next-sibling: Denoted with `+`, it's similar to subsequent-sibling. However, given `A + B`, it only matches `B` if `B` is immediately preceded by `A`, with both sharing the same parent.
+* 		- Column: denoted by `||`, selects nodes that belong to a column. E.g.: col || td {} (matches all `td` elements that belong to the scope of `col`).
+* 		- Namespace: Generally used in conjunction with the `@namespace` at-rule. Denoted with a `|`. It limits type selectors and universal selectors to a specific namespace. For example consider 
+* 			the following namespace: `@namespace SVG url('...');`, you can include selectors that target elements nested in an SVG namespace only. `SVG|a` match links withing SVGs and not those
+* 			in the rest of the document. It's useful to target MathML, SVG, or other XML-based content within your HTML.
+* - Selectors can be nested to improve readability using or not the `&` nesting selector. E.g.: h2 { & + p {} } (is the same as h2 + p {})
+*/
+
+/*
+* Colors
+* - A color is a datatype is CSS.
+* - A color might also include an alpha-channel (transparency value).
+* 	- Named colors: are colors that are named (blue, green, black).
+* 	- Hexadecimal: divide each RGB channel in a hexadecimal unit. E.g.: `#ff0099` (sets ff for the RED channel, 00 for the GREEN channel, and 99 for the BLUE channel). It can be written in shorthand 
+* 		format as `#f09`. It can also be present in the eight-digit form in which the last 2 digits represent the alpha channel of the color, e.g: #ff0099aa`.
+* 	- RGB: Default RGB definition. E.g.: `rgb(255 0 153)` or `rgb(255 0 153 / 80%)` with alpha channel.
+* 	- HSL (Hue, Saturation, Lightness): `hls(150 30% 60%)` or `hls(150 30% 60% / 25%)` with alpha channel.
+* 		- Hue is a degree on the volor wheel (0 to 360).
+* 		- Saturation is the intensity of a color, it is a percentage value 0% means a shade of gray, and 100% is the pure color.
+*		- Lightness is how much light you want to give the color where 0% is black (no light) 50% is neither lighr or dark, 100% is white (full light).
+*		- Shades of gray are often defined by setting the hue and saturation to 0 and adjusting the lightness.
+*/
+
+/*
+* Box Model
+* In CSS we have block boxes and inline boxes. These types refers to how the box behaves in terms of page flow and in relation to other boxes on the page.
+* Boxes have an inner display type and an outer display type.
+*
+* If a box has a display value of `block` then:
+* - the box will break onto a new line.
+* - width and height properties are respected.
+* - padding, margin and border will cause other elements to be pushed away from the box.
+* - if width is not specified, the box will extend in the inline direction to fill the space available in its container.
+* - Some elements have their outer display as 'block' by default.
+*
+* If a box has display inline, then:
+* - The box will not break onto a new line.
+* - width, height, and top and bottom margins will have no effect.
+* - top and bottom padding and borders will change the size of the box without affecting the position of surrounding content (can cause overlapping).
+* - left and right padding, margins and borders will affect the position of surrounding inline content.
+* - Some elements use 'inline' as their 'outer display' type by default.
+*
+* 'block' and 'inline' display values are said to be 'outer display' types, they affect how the box is laid out in relation to other boxes around it.
+* The 'inner display' type dictates how elements inside that box are laid out.
+*
+* > The box model is controlled by the 'display' property in CSS. The 'inline-block' value for this property is the middle ground between 'inline' 
+* and 'block' displays. Use it when you don't want an item to break onto a new line, but do want it to respect 'width' and 'height' and avoid 
+* overlapping.
+*
+* Parts of a box:
+* - Content Box: The area where your content is displayed (the inside of the box). Size it using 'width' and 'height'.
+* - Padding Box: The padding sits around the content as white space (space between the content and the border). Size it using 'padding'.
+* - Border Box: The border box wraps the content and any padding (it's the border of the box). Size it with 'border'.
+* - Margin Box: Wraps the border as whitespace between this box and other elements. Size it using 'margin'.
+*
+* Standard CSS box model:
+* In this model, 'width' and 'height' apply to the 'content box' only. Any padding, border and margin are added to those dimensions to get the total
+* size of the box.
+*
+* Alternatize CSS box model:
+* In this model, 'width' and 'height' define the total value of the box, so te space available for the 'content box' is the width/height minus border
+* and padding. This behavior is controlled by setting the 'box-sizing' property to 'border-box'.
+*
+* Margin collapsing
+* The top and bottom margins of blocks are sometimes collapsed into a single margin whose size is the largest of the individual margins. Floating and 
+* absolutely positioned elements never collapse. It occurs when:
+* - Adjacent siblings.
+* - No content separating parent and descendant. 
+* 	- The 'margin-top' of a parent collapses witht the 'margin-top' of its first-in-flow descendat unless the parent has a 'border', 'padding', 'contains' 
+* 	any inline content or has a clearance applied.
+* 	- The 'margin-bottom' of a parent will collapse with the 'margin-bottom' of its last-in-flow descendant unless the parent has a defined 'height', 
+* 	'min-height', 'border-bottom' or 'padding-bottom'.
+* - Empty blocks: If there is no border, padding, inline content, height, or min-height to separate a block's 'margin-top' from its 'margin-bottom', then its 
+* 	top and bottom margin collapse.
+*
+* Note:
+* - The cases above can create complex collapsing if more than two margins occur.
+* - The rules apply even to margins that are zero.
+* - Collpsing margins are only relevant in vertical direction.
+* - Margins don't collpase in container with 'display' set to 'flex' or 'grid'.
+* - Two positive margins will combine to become one margin. Its size will be equal to the largest individual margin.
+* - Two negative margins will collapse and the smallest value will be used.
+* - If one is negative, its value will be subtracted from the total.
+*
+* So if you have two adjacent paragraphs, the first one with 'margin-bottom=50px' and the second with 'margin-top=30px'. The margins will collapse and 
+* the resulting margin will be '50px' between the two.
 * */
+
+/*
+ * Lengths
+ * There are two types of lengths in CSS:
+ * 	- Absolute:
+ * 		- Inches: `in`. 1in = 96px
+ * 		- Pixels: `px`.
+ * 	- Relative:
+ * 		- `em`: Is relative to the current or parent element font-size. It represents a percentage of the inherited size with 1 meaning 100% of the original size.
+ * 		- `rem`: Is relative to the root element font-size. It represents a percentage of the inherited size with 1 meaning 100% of the original size.
+ * 		- `vh`: Respective to the viewport's height. Represents a percentage of the viewport.
+ * 		- `vw`: Respective to the viewport's width. Represents a percentage of the viewport.
+ */
