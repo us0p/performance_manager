@@ -312,11 +312,41 @@
  *		- 'row-gap'
  *
  * Flexbox
- * - One-dimensional layout method for arranging items in rows or columns.
- * - Flex items expands to fill additional space or shrink to fir into smaller spaces.
- * - It allows you to:
- * 	- Vertically center a block of content inside its parent.
- * 	- Make all children take up an equal amount of available width/height.
- * 	- Make all columns in a multiple-column layout adopt the same height even if they contain a different amount of content.
+ * - One-dimensional layout method for arranging items in rows or columns. Main idea is to give the container the ability to alter its items width/height and order to best fill 
+ * 	the available space mostly to accomodate to all kind screen sizes. A flex container expands items to fill available space or shrinks them to prevent overflow.
+ * - Some properties from flexbox are ment to be set on the parent container and others in the flex items.
+ *
+ * Parent properties:
  * - The 'display:flex' property is set on the parent to make its children to become flex items. The parent becomes a flex container.
+ * - Flex items are laid out along two axes:
+ * 	- Main axis: determine the direction flex items are laid out (as a row across the page from left to right or as a column down the page from top to bottom).
+ * 	- Cross axis: Runs perpendicular to the flex item's direction.
+ * - The 'flex-direction' property controls the direction of the main axis. Default is 'row'.
+ * - Flex items don't break lines by default, if you keep adding them you'll end up with a side-scroll. To make it wrap, add 'flex-wrap=wrap' property.
+ * - Flexbox can also be used to align items horizontally and vertically:
+ * 	- 'align-items' specify where flex items sit in the cross axis.
+ * 	- 'justify-content' controls where the flex items sit on the main axis.
+ *
+ * Child properties:
+ * - The 'flex' property is used to define how much space each flex item will take. It's a proportion so givin 'flex:1' or 'flex:2000' will have the same effect. Differences appear 
+ * 	when you have it assigned to different items. For example, an item with 'flex:2' will take twice the space of an item with 'flex:1'. This property is a shorthand for:
+ * 	- 'flex-grow': The expansion behavior explained above.
+ * 	- 'flex-basis': The minimum size value each unit of space will have. Considering the example above, combining 'flex: 2 100px' and 'flex: 1 100px' for 3 items 
+ * 		(two apply flex 1, the other apply flex 2) will create 4 units of space each having 100px, where the first two items will take 100px each and the last will take 200px.
+ */
+
+/*
+ * Grid
+ * Two dimensional grid-based layout that make it easier to align elements into columns and rows. It's easier to handle than tables.
+ * - Grid Container: The element to which 'display: grid' is applied.
+ * - Grid Item: Direct descendants of the grid container.
+ * - Grid Line: Dividing lines that make up the structure of the grid. Can be either vertical (column grid lines) or horizontal (row grid lines) and reside either side of a row or column.
+ * - Grid Track: The columns or rows of the grid.
+ * - Grid Area: Total space surrounded by four grid lines. Note that this doesn't refer to the lines as in a line of HTML elements, but to the lines that delimit the grid layout.
+ * - Grid Cell: Space between teo adjacent row and two adjacent column grid lines.
+ * 
+ * As in the flexbox module, grid has properties that apply to the parent and other that apply to the child:
+ * Parent properties:
+ * - 'display': Defines the element as a grid container.
+ * - 'grid-template-[columns/rows]': Defines the columns and rows of the grid with a space-separated list of values.
  */
