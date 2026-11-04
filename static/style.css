@@ -347,6 +347,23 @@
  * 
  * As in the flexbox module, grid has properties that apply to the parent and other that apply to the child:
  * Parent properties:
+ * - The grid layout identifies columns and rows with names to allow definining where elements are placed.
  * - 'display': Defines the element as a grid container.
- * - 'grid-template-[columns/rows]': Defines the columns and rows of the grid with a space-separated list of values.
+ * - 'grid-template-[columns/rows]': 
+* 	- Defines the columns and rows of the grid with a space-separated list of values.
+* 	- 'grid-template-columns: 10px 50px': define two columns with 10px and 50px of area size respectivelly.
+* 		Note that grid are automatically assigned positive numbers from these assignments (you can target the last one row with -1).
+* 	- 'grid-template-rows: [row1-start] 20px [row1-end] 100px [second] 20px': Define 2 rows. The first row start is named row1-start and end row1-end. The second row is 
+* 		named 'second'.
+ * - 'grid-template-areas': Defines the names of the grid areas. These names are used to define the template on how items are layed out in the grid.
+ * 	- 'grid-template-areas':
+* 		"header	header header header"
+* 		"main main . sidebar"
+* 		"footer footer footer footer";
+* 	- This template defines three rows that are 4 columns wide. The first is the header, the middle is the main section which takes 4 columns, and empty column to create 
+* 		some space and the side bar in the last column. The last row is the footer which takes 4 columns.
+* 		Note that you're naming the areas not the lines of columns. With this syntax, the lines on either end of the areas are named automatically. For example, if name of your 
+* 		grid is 'foo', the name of the area's starting row line and starting column line will be 'foo-start', and the name of its last row line and last column line will 
+* 		be 'foo-end'. This means that some lines might have multiple names, such as the far left line in the above example, which will have three names: 
+* 		'header-start', 'main-start', 'footer-start'.
  */
