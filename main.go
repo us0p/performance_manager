@@ -62,6 +62,13 @@ func main() {
 		}
 	})
 
+	server.HandleFunc("/test", func(res http.ResponseWriter, req *http.Request) {
+		if err = pageTemplates["test.html"].ExecuteTemplate(res, "index.html", nil); err != nil {
+			log.Println(err)
+			http.Error(res, "Failed to excute template", http.StatusInternalServerError)
+		}
+	})
+
 	server.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 
 	fmt.Println("Starting server on port :8000")

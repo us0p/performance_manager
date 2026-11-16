@@ -447,7 +447,7 @@
  * 	background-color: green;
  * }
  *
- * Looks like BEM but is nested and the names don't correctly specify what this will do.
+ * Looks like BEM but is nested and the names do not correctly specify what this will do.
  *
  * We should never:
  * - Override modifiers in an unrelated block.
@@ -511,7 +511,7 @@
  * Declare strict cascade priority up front:
  * @layer generic, elements, objects, components, trumps;
  *
- * Layers settings and tools are not imported as they don't produce any CSS by themselves. Other layers use them to produce the CSS.
+ * Layers settings and tools must define their behavior in top layers so that hey can be reused in lower layers since they do not produce any CSS by themselves.
  *
  * @import "03-generic/reset.css" layer(generic);
  * @import "04-elements/heading.css" layer(elements);
@@ -527,3 +527,17 @@
  * - Minify and compress: Strip whitespaces and comments and serve file with compression enabled on your web server or CDN.
  * - Code-split heavy components: If you have massive component stylesheets used only in specific pages, load those component bundles only on the routes that need them rather than in the global file.
  */
+
+@layer settings, generic, elements, objects, components;
+
+@import "01-settings/color.css" layer(settings);
+@import "01-settings/spacing.css" layer(settings);
+@import "01-settings/typography.css" layer(settings);
+
+@import "03-generic/reset.css" layer(generic);
+
+@import "04-element/page.css" layer(elements);
+
+@import "05-object/container.css" layer(objects);
+
+@import "06-component/form.css" layer(components);

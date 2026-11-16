@@ -1,0 +1,6 @@
+.frm {
+	background-color: var(--light-beige);
+	width: 50vw;
+	height: 500px;
+	border-radius: var(--bd-radius);
+}
