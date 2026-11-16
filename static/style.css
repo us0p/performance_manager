@@ -142,21 +142,6 @@
 */
 
 /*
-* Colors
-* - A color is a datatype is CSS.
-* - A color might also include an alpha-channel (transparency value).
-* 	- Named colors: are colors that are named (blue, green, black).
-* 	- Hexadecimal: divide each RGB channel in a hexadecimal unit. E.g.: `#ff0099` (sets ff for the RED channel, 00 for the GREEN channel, and 99 for the BLUE channel). It can be written in shorthand 
-* 		format as `#f09`. It can also be present in the eight-digit form in which the last 2 digits represent the alpha channel of the color, e.g: #ff0099aa`.
-* 	- RGB: Default RGB definition. E.g.: `rgb(255 0 153)` or `rgb(255 0 153 / 80%)` with alpha channel.
-* 	- HSL (Hue, Saturation, Lightness): `hls(150 30% 60%)` or `hls(150 30% 60% / 25%)` with alpha channel.
-* 		- Hue is a degree on the volor wheel (0 to 360).
-* 		- Saturation is the intensity of a color, it is a percentage value 0% means a shade of gray, and 100% is the pure color.
-*		- Lightness is how much light you want to give the color where 0% is black (no light) 50% is neither lighr or dark, 100% is white (full light).
-*		- Shades of gray are often defined by setting the hue and saturation to 0 and adjusting the lightness.
-*/
-
-/*
 * Box Model
 * In CSS we have block boxes and inline boxes. These types refers to how the box behaves in terms of page flow and in relation to other boxes on the page.
 * Boxes have an inner display type and an outer display type.
@@ -192,7 +177,7 @@
 * In this model, 'width' and 'height' apply to the 'content box' only. Any padding, border and margin are added to those dimensions to get the total
 * size of the box.
 *
-* Alternatize CSS box model:
+* Alternative CSS box model:
 * In this model, 'width' and 'height' define the total value of the box, so te space available for the 'content box' is the width/height minus border
 * and padding. This behavior is controlled by setting the 'box-sizing' property to 'border-box'.
 *
@@ -250,7 +235,7 @@
  *
  * Values can be:
  * - Static: Element is positioned according to Normal Flow (top, right, bottom, left and z-index properties have no effect). It's the default value.
- * - Relative: The element is positioned according to the normal flow of the document (it takes space in the page as if position were 'static'), and then offets are applied 
+ * - Relative: The element is positioned according to the normal flow of the document (it takes space in the page), and then offets are applied 
  * 	relatively to itself based on values of 'top', 'right', 'bottom', and 'left'. The offset doesn't affect the position of any other elements. This value creates a new 
  * 	stacking context allowing usage of 'z-index'.
  * - Absolute: Element is removed from the normal document flow, and no space is created for the element in the page. Element is positioned relative (this is usually where 
@@ -261,7 +246,7 @@
  * - Sticky: Positioned in the normal flow of the document, and then offset relative to its nearest scrolling ancestor and containing block elements, based on the values of 
  * 	'top', 'right', 'bottom', and 'left'. The offset doesn't affect the positioning of any other elements. This values creates a new stacking-context allowing 'z-index' 
  * 	usage. Note that stick element 'sticks' to its nearest ancertor that has a "scrolling mechanism" (created when 'overflow' is 'hidden', 'scroll', 'auto', or 
- * 	'overlay', even if that ancestr isn't the nearest actually scroling ancestor.
+ * 	'overlay', even if that ancestor isn't the nearest actually scroling ancestor.
  */
 
 /*
@@ -366,4 +351,179 @@
 * 		grid is 'foo', the name of the area's starting row line and starting column line will be 'foo-start', and the name of its last row line and last column line will 
 * 		be 'foo-end'. This means that some lines might have multiple names, such as the far left line in the above example, which will have three names: 
 * 		'header-start', 'main-start', 'footer-start'.
+* 	- 'justify-items':
+* 		Aligns grid items along the inline (row) axis. Opposed to 'align-items' which aligns along the block (column) axis.
+* 	- 'justify-content':
+* 		Align grid items inside a grid container in the inline axis.
+* 	- 'align-content':
+* 		Align grid items inside a grid container in teh block axis.
+* 	- 'grid-auto-<column/row>':
+* 		Specifies the size of any implicit grid tracks. Implicit tracks are created when there are more grid items than cells in the grid or when a grid item is placed outside
+* 		the explicit grid. E.g.: You have two elements and you want to place them separately in two columns, element A goes in collumn 1, element B goes in collumn 3. In this example, 
+* 		column 2 is the implicit track.
+* 	- 'gap':
+* 		Shorthand that combines 'row-gap' and 'column-gap' and controls the space between items.
+* 	- 'grid-auto-flow':
+* 		Controls how auto-placement algorithm works for items in the grid. Auto placement target items that don't specify where they should go themselves. E.g.: 'grig-auto-flor: row' 
+* 		will place non-specified items until row completion before spawning new rows.
+*
+* Child properties:
+* - 'grid-<column/row>':
+* 	Shorthand for 'grid-column-start + grid-column-end' and 'grid-row-start + grid-row-end' respectively. It can also target named column/row. E.g.: 'grid-column: 1 / 3' will place an item that 
+* 	will start on column 1 and end on column 3. You can also specify the number of columns/rows an item should take by using the 'span' keyword: 'grid-column: 3 / span 2' will place item in the 
+* 	3rd column start and then will span 2 colums (the 3rd and the 4th).
+* - 'grid-area':
+* 	Gives an item a name so that it can be reference by a template created with the 'grid-template-areas'. 
+* 	E.g.: 'grid-area: header' will place the item in the header section delimited by 'grid-template-areas'. 
+* 	Can also accept an even shorter declaration of colum/row start/end, values must follow the order: '<row-start> / <column-start> / <row-end> / <column-end>'. 
+* 	E.g.: 'grid-area: 1 / col4-start / last-line / 6' will place item on the first line, starting from the beginning of the 4th column all the way of the last line spaning from column 4 to column 6.
+* - 'justify-self':
+* 	Align a grid item inside a cell along the inline axis.
+* - 'align-self':
+* 	Aligns a grid item inside a cell along the block axis.
+* - 'place-self':
+* 	Shorthand for 'align-self' and 'justify-self' respectively.
+ */
+
+/*
+ * What's the difference between flexbox and grid?
+ * - Flexbox can optionally wrap. Grid can also optionally wrap if we allow auto filling (items will fill a row and move to the new row or auto place themselvers), but they will fall along the same 
+ * grid lines all the other elements do. In flexbox items will simply wrap to a new line when the parent element fill the line.
+ * - Flexbox is one dimensional. You can make rows and columns with it but you can't control specifically where each element will be. Grid is two dimensional, you can specify exatcly where you want the element to be.
+ * - Grid is mostly defined on the parent. In flexbox, most of the layout is on the children.
+ * - Grid is better at overlapping. Getting elements to overlap in flexbox requires lookint at traditional stuff like negative margins, transforms, etc.
+ * - Flexbox can push things away. You can put 'margin-right: auto;' on an element and, if there is room, that element will push everything else as far away as it can go.
+ */
+
+/*
+ * CSS Variables
+ * Entities defined by CSS authors that represent specific values to be reused throughout a document. Set using the '@property' at-rule or by custom property syntax '--primary-color: blue;'.
+ * - Custom properties are accessed using the CSS 'var()' function e.g., 'color: var(--primary-color);'.
+ * - Custom properties are subject to the cascade and inherit their value from their parent.
+ * - The at-rule lets you specify whether it inherits its value frmo a parent, what the initial value is, and the type constraints that should apply.
+ * - Variables do not work inside media queries and container queries. You can only use the 'var()' function as property values.
+ * - Variables can be scoped. E.g.: 'section { --main-bg-color: brown; }' defines a variable that can only be used for 'section' elements. A common practice is to define variables in the ':root' pseudo-class, so 
+ * that it can be referenced globally.
+ * - At-rule example: '@property --logo-color { syntax: "<color>"; inherits: false; initial-value: #c0ffee; }'.
+ * - You can define fallbacks in the 'var()' function. E.g.: 'var(--my-var, red)'. Will use the color in 'my-var' otherwise will use 'red'. You can provide any number of fallback values, including other variables.
+ * 
+ * Best practices for CSS variables:
+ * - Variables must be logically grouped.
+ * - Fallback values must be used to ensure compatibility.
+ */
+
+/*
+ * BEM (Block, Element, Modifier) Metodology
+ * Is a naming convention for classes in HTML and CSS. Its goal is to help developers better understand the relationship between the HTML and CSS.
+ *
+ * Example of CSS writting in the BEM style:
+ * ```CSS
+ * 	Block component
+ * 	.btn {}
+ *
+ * 	Element that depends upon the block
+ * 	.btn__price {}
+ *
+ * 	Modifier that changes the style of the block
+ * 	.btn--orange {}
+ * 	.btn--big {}
+ * ```
+ *
+ * - A block is a top-level abstraction of a new component. In the example above, a button.
+ * - Child items are placed in the parent component and are denoted by two underscores following the name of the block.
+ * - Modifiers can manipulate the block so that we can theme or style that particular component without inflicting changes on unrelated module.
+ *
+ *
+ * Why BEM?
+ * - Reduced CSS, pre-existing modifiers and components can be reused with clarity.
+ * - Clarity, style is clear in markup without needing to read the stylesheet to understand how it's styled on most cases.
+ * - Consistent, designers and developers can consistently name components.
+ * - Everything is a class and nothing is nested. This means specificity is flat and low meaning you won't end up fighting yourself over specificity.
+ *
+ * Problems with BEM:
+ * - You can write selectors that look like BEM but are not:
+ *
+ * .nav .nav__listItem .btn--orange {
+ * 	background-color: green;
+ * }
+ *
+ * Looks like BEM but is nested and the names don't correctly specify what this will do.
+ *
+ * We should never:
+ * - Override modifiers in an unrelated block.
+ * - Make unnecessary parent elements when the child can exist by itself.
+ */
+
+/*
+ * ITCSS (Inverted Triangle CSS)
+ * Metodology for structurying your CSS files in dedicated folders using importing and layering to scope rules consistent and avoid fighting specificity.
+ *
+ * Principles:
+ * 1. Generic to explicit: Start witht he most generic, low-level, catch-all styles.
+ * 2. Low to high specificity: The lowest specificity selectors appear at the start of your project. The specificity steadly increases.
+ * 3. Far-reaching to localized: Selectors at the start of your project affect a lot of DOM-elements. Selectors later in your poject become very localized.
+ *
+ * Sticking to be above principles means we have to break up our CSS into layers. Each layer must be introduced in a location that honors each of the criteria.
+ *
+ * 
+ * The 7 Layers of ITCSS:
+ * Each layer builds upon the previous one without ever reaching back up to override earlier layers:
+ * 1. Settings. Global variables, color palettes, font definitions, and configuration switches. Outputs no actual CSS.
+ * 2. Tools. Globally available mixins and helper functions. Also outputs no CSS on its own.
+ * 3. Generic. High-reach, low-specificity ground-zero styles like CSS resets, normalize.css, and global box-sizing rules.
+ * 4. Elements (or Base). Unclassed HTML element defaults (h1, p, a, ul) that define basic typography and element styling without classes.
+ * 5. Objects. Class-based selectors for cosmetic-free structural design patterns (such as layout grids, wrappers, and media objects).
+ * 6. Components. Explicit, designed UI pieces (buttons, cards, modals, navbars) where most project-specific styling lives.
+ * 7. Trumps (or Utilities). High-specificity helper classes and overrides (like .u-hidden or !important utility rules) designed to win against all previous layers.
+ *
+ * A clean ITCSS project uses numbered folders to keep files sorted in the exact order of the cascade and imports everything into a single master file 'main.css' that gets bundled and minified for production.
+ *
+ * Example:
+ * styles/
+ * ├── 01-settings/
+ * │   ├── colors.css
+ * │   ├── spacing.css
+ * │   └── typography.css
+ * ├── 02-tools/
+ * │   ├── mixins.css
+ * │   └── functions.css
+ * ├── 03-generic/
+ * │   ├── reset.css
+ * │   └── box-sizing.css
+ * ├── 04-elements/
+ * │   ├── headings.css
+ * │   ├── links.css
+ * │   └── page.css
+ * ├── 05-objects/
+ * │   ├── container.css
+ * │   └── grid.css
+ * ├── 06-components/
+ * │   ├── button.css
+ * │   ├── card.css
+ * │   └── navbar.css
+ * ├── 07-trumps/
+ * │   └── utilities.css
+ * └── main.css
+ *
+ * All partial files are imported strictly from top to bottom in your root file. Never import layers out of order. In modern CSS:
+ *
+ * ```CSS
+ * Declare strict cascade priority up front:
+ * @layer generic, elements, objects, components, trumps;
+ *
+ * Layers settings and tools are not imported as they don't produce any CSS by themselves. Other layers use them to produce the CSS.
+ *
+ * @import "03-generic/reset.css" layer(generic);
+ * @import "04-elements/heading.css" layer(elements);
+ * ...
+ * ```
+ *
+ * With '@layer', anything in 'trumps' automatically beats 'components' regardless of selector specificity or file load order.
+ *
+ * Performance considerations:
+ * Having files separated like this is great for organization, but each import is a network request the user has to make everytime he loads a page, depending on the number of 
+ * styles the loading can be very demandting, specially for mobile users. For that:
+ * - Bundle into a single file: Use a build tool to compile all your CSS '@import' statements into one single file at build time.
+ * - Minify and compress: Strip whitespaces and comments and serve file with compression enabled on your web server or CDN.
+ * - Code-split heavy components: If you have massive component stylesheets used only in specific pages, load those component bundles only on the routes that need them rather than in the global file.
  */
