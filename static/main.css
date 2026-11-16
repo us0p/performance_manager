@@ -177,7 +177,7 @@
 * In this model, 'width' and 'height' apply to the 'content box' only. Any padding, border and margin are added to those dimensions to get the total
 * size of the box.
 *
-* Alternative CSS box model:
+* Alternative CSS box model
 * In this model, 'width' and 'height' define the total value of the box, so te space available for the 'content box' is the width/height minus border
 * and padding. This behavior is controlled by setting the 'box-sizing' property to 'border-box'.
 *
@@ -497,7 +497,7 @@
  * ├── 05-objects/
  * │   ├── container.css
  * │   └── grid.css
- * ├── 06-components/
+ * ├── 06-components/ -> add cosmetic to objects, this is where layout is defined
  * │   ├── button.css
  * │   ├── card.css
  * │   └── navbar.css
@@ -505,7 +505,17 @@
  * │   └── utilities.css
  * └── main.css
  *
+ *
+ * Layers explanation:
+ * 04 - elements: Applies automatic to a tag. No class involved.
+ * 05 - objects: Opt-in class that only arranges things, with no visual style. It must be reusable
+ * on any tag with any content, the same object might wrap a form, a list or a hero section.
+ * 06 - components: Opt-in class that controls how an piece of UI looks.
+ *
+ *
  * All partial files are imported strictly from top to bottom in your root file. Never import layers out of order. In modern CSS:
+ * 
+ * When using ITCSS + BEM, it is a good practice to prefix every class with its layer so its easy to see where it is comming from.
  *
  * ```CSS
  * Declare strict cascade priority up front:
@@ -537,7 +547,11 @@
 @import "03-generic/reset.css" layer(generic);
 
 @import "04-element/page.css" layer(elements);
+@import "04-element/button.css" layer(elements);
+@import "04-element/input.css" layer(elements);
 
 @import "05-object/container.css" layer(objects);
+@import "05-object/form.css" layer(objects);
 
 @import "06-component/form.css" layer(components);
+@import "06-component/button.css" layer(objects);

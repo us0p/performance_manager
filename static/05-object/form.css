@@ -1,0 +1,8 @@
+.frm__input-container {
+	display: grid;
+	width: 100%;
+}
+
+.input-container__label {
+	padding-bottom: 10px;
+}

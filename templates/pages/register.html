@@ -3,32 +3,32 @@
 <!-- actions are evaluated against data, for example: {{".Name"}} will read the Name attribute of the provided data when calling Execute(w, data)-->
 {{define "body"}}
 <div class="div__grid-container div__grid-container__centralized">
-	<form method="post" action="/register" class="frm">
-		<div>
+	<form method="post" action="/register" class="frm-register">
+		<div class="frm__input-container">
 			<!-- always add id to your input so that you can point the right label to it. The 'for' attribute indicates which input this label is associated with -->
 			<!-- if the user clicks the label, it'll redirect the user cursor to the target input. It improves usability -->
-			<label for="name-input">Name</label>
+			<label for="name-input" class="input-container__label">Name</label>
 			<!-- always add the necessary input properties:
 		    name: is the name of the attribute the form will use when sending data to the server.
 		    type: helps with usability, for example, in mobile the keyboard will change depending on the type.
 		-->
 			<input id="name-input" name="name" type="text" autocomplete="name" />
 		</div>
-		<div>
-			<label for="email-input">E-mail</label>
+		<div class="frm__input-container">
+			<label for="email-input" class="input-container__label">E-mail</label>
 			<input id="email-input" name="email" type="email" autocomplete="email" />
 		</div>
-		<div>
-			<label for="password-input">Password</label>
+		<div class="frm__input-container">
+			<label for="password-input" class="input-container__label">Password</label>
 			<!-- autocomplete new-password tells password managers to generatea  new password -->
 			<input id="password-input" name="password" type="password" autocomplete="new-password" />
 		</div>
-		<div>
-			<label for="confirm-password-input">Confirm Password</label>
+		<div class="frm__input-container">
+			<label for="confirm-password-input" class="input-container__label">Confirm Password</label>
 			<input id="confirm-password-input" name="confirm_password" type="password" />
 		</div>
 		<!-- couples this button to this form -->
-		<button type="submit">Register</button>
+		<button type="submit" class="btn btn--main">Register</button>
 	</form>
 </div>
 {{end}}

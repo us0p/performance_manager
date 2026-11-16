@@ -1,0 +1,7 @@
+input {
+	border: none;
+	width: 100%;
+	padding: var(--form-element-padding);
+	border-radius: var(--bd-radius);
+	font-family: var(--ff-default);
+}

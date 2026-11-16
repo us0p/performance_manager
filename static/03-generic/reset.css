@@ -133,3 +133,19 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+
+/* adding font reset to all texts in the document */
+input,
+button,
+select,
+textarea {
+	font: inherit;
+	/* family, size, weight, style and line-height */
+}
+
+/* Reseting box sizing model of the complete page */
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}

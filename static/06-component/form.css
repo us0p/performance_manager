@@ -1,6 +1,17 @@
-.frm {
-	background-color: var(--light-beige);
+.frm-register {
+	display: grid;
+	grid-template-columns: minmax(300px, 30vw);
+	grid-template-rows: auto auto auto auto 100px;
+
+	justify-content: center;
+	align-items: center;
+	gap: 20px;
+
 	width: 50vw;
-	height: 500px;
+	min-width: 400px;
+	padding: 20px;
+
 	border-radius: var(--bd-radius);
+
+	background-color: var(--light-palm-leaf);
 }

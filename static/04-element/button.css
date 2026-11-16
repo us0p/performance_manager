@@ -1,0 +1,9 @@
+button {
+	padding: var(--form-element-padding);
+	border: none;
+	border-radius: var(--bd-radius);
+}
+
+button:hover {
+	cursor: pointer;
+}
