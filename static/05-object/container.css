@@ -1,10 +1,17 @@
-.div__grid-container {
+/* The block section of BEM must specify what the element IS */
+.grid-container {
 	display: grid;
 	width: 100%;
 	height: 100vh;
 }
 
-.div__grid-container__centralized {
-	align-items: center;
+/* It's not required to have all elements of BEM, you can group block with modifiers without providing element */
+.grid-container--centralized {
+	/*
+	 * A grid row is content sized when the track size is auto (default), (min/max)-content or fit-content.
+	 * Auto rows strech to fill available space in the container which can make the row look larger than it really is if the parent has a fixed height.
+	 * Here we're using 'align-content' which position tracks inside the container rather than 'align-items' which has a default behavior of stretch as well.
+	 */
+	align-content: center;
 	justify-content: center;
 }

@@ -1,4 +1,4 @@
-.frm-register {
+.form-register {
 	display: grid;
 	grid-template-columns: minmax(300px, 30vw);
 	grid-template-rows: auto auto auto auto 100px;

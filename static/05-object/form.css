@@ -1,8 +1,10 @@
-.frm__input-container {
+/* According to BEM the block must specify the role */
+.form-field {
 	display: grid;
 	width: 100%;
 }
 
-.input-container__label {
+/* The element is appended to the block */
+.form-field__label {
 	padding-bottom: 10px;
 }
