@@ -550,6 +550,7 @@
 @import "04-element/button.css" layer(elements);
 @import "04-element/input.css" layer(elements);
 @import "04-element/title.css" layer(elements);
+@import "04-element/text.css" layer(elements);
 
 @import "05-object/container.css" layer(objects);
 @import "05-object/form.css" layer(objects);

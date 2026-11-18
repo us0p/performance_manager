@@ -7,11 +7,27 @@
 	align-items: center;
 	gap: 20px;
 
-	width: 50vw;
+	width: 40vw;
 	min-width: 400px;
 	padding: 20px;
 
 	border-radius: var(--bd-radius);
 
+	background-color: var(--light-palm-leaf);
+}
+
+.form-account-activation {
+	display: grid;
+	grid-template-columns: minmax(300px, 30vw);
+
+	justify-content: center;
+	align-content: center;
+	gap: 20px;
+
+	width: 40vw;
+	min-width: 400px;
+	padding: 50px;
+
+	border-radius: var(--bd-radius);
 	background-color: var(--light-palm-leaf);
 }

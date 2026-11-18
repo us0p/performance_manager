@@ -1,0 +1,12 @@
+{{define "body"}}
+<div class="full-screen grid-container grid-container--centralized">
+	<h1 class="title">Ative sua conta</h1>
+	<form class="form-account-activation" method="post" action="/activate">
+		<div class="form-field">
+			<label for="activation-code" class="form-field__label">Activation Code</label>
+			<input id="activation-code" type="text" name="activation_code" class="form-field__input" />
+		</div>
+		<button type="submit">Activate Account</button>
+	</form>
+</div>
+{{end}}

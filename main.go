@@ -62,10 +62,31 @@ func main() {
 		}
 	})
 
-	server.HandleFunc("/test", func(res http.ResponseWriter, req *http.Request) {
-		if err = pageTemplates["test.html"].ExecuteTemplate(res, "index.html", nil); err != nil {
+	server.HandleFunc("/account-activation", func(res http.ResponseWriter, req *http.Request) {
+		if err = pageTemplates["account_activation.html"].ExecuteTemplate(res, "index.html", nil); err != nil {
 			log.Println(err)
 			http.Error(res, "Failed to excute template", http.StatusInternalServerError)
+		}
+	})
+
+	server.HandleFunc("/login", func(res http.ResponseWriter, req *http.Request) {
+		if err = pageTemplates["login.html"].ExecuteTemplate(res, "index.html", nil); err != nil {
+			log.Println(err)
+			http.Error(res, "Failed to excute template", http.StatusInternalServerError)
+		}
+	})
+
+	server.HandleFunc("/reset-password", func(res http.ResponseWriter, req *http.Request) {
+		if err = pageTemplates["reset_password.html"].ExecuteTemplate(res, "index.html", nil); err != nil {
+			log.Println(err)
+			http.Error(res, "Failed to execute template", http.StatusInternalServerError)
+		}
+	})
+
+	server.HandleFunc("/update-password", func(res http.ResponseWriter, req *http.Request) {
+		if err = pageTemplates["update_password.html"].ExecuteTemplate(res, "index.html", nil); err != nil {
+			log.Println(err)
+			http.Error(res, "Failed to execute template", http.StatusInternalServerError)
 		}
 	})
 

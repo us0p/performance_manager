@@ -1,0 +1,43 @@
+{{define "body"}}
+<div class="grid-container full-screen grid-container--centralized">
+	<h1 class="title">Welcome, to Performance Manager</h1>
+	<form method="post" action="/login" class="form-account-activation">
+		<div class="form-field">
+			<label for="email" class="form-field__label">E-mail</label>
+			<input id="email" type="email" class="form-field__input" autocomplete="email" />
+		</div>
+		<div class="form-field">
+			<label for="password" class="form-field__label">Password</label>
+			<input id="password" type="password" class="form-field__input" autocomplete="password" />
+		</div>
+		<button type="submit">Login</button>
+		<div class="grid-container grid-container--spread">
+			<a href="/reset-password">Forgot password?</a>
+			<!-- 
+			    - 'href': points to the target page.
+				- For same domain pages you can provide the route only.
+			    	- You can reference elements in the same page by pointing 'href' to a '#<element-id>'.
+			    	- You can use the 'mailto:<user-email>' to open user's email client.
+			    	- You can use 'tel:+<user-phone>' to start a phone call.
+			    - 'target': controls where the link opens.
+				- Use '_blank' to open in a new tab.
+			    - 'rel': Defines the relationship between the linked document. You can combine multiple space separated values.
+				- 'noopener': Prevents the newly opened page from acessing the original page via JavaScript. Must always be used when opening pages in new tabs to external untrusted websites.
+				- 'noreferrer': Hides your page's URL from the destination site's statistics and automatically applies 'noopener'. Use when you want to protect user privacy or hide where traffic is comming from.
+				- 'nofollow': Tells search engines not to pass ranking credit or endorse the target page. Used for untrusted links, paid placements, or pages you don't want to vouch for.
+				- 'sponsored': Identifies links that are advertisements, paid placements, or affiliate links. Required by search engines for any paid or compesated links.
+			    - 'download': Prompts the user to download the linked file instead of navigating to it.
+			    - 'title': Displays extra tooltip text when the user hovers over the link.
+
+			    Security concerns about 'target=_blank':
+			    Users that open a link to a new tab are exposed to a phishing attack called reverse tabnabbing.
+			    - How it works: By default, a new tab gets partial access to the original tab through the JavaScript 'window.opener' object.
+			    The destination can run 'window.opener.location = "<another-site-address>"'. Essentially changin the original page.
+			    - Why is dangerous: While the user is looking at the new tab, the original page is swapped by a look alike phishing page which might present a fake login scree to try to steal user's login creds.
+			    - How to prevent: Always set 'rel="noopener noreferrer"' for external links.
+			-->
+			<a href="/register">Sign up</a>
+		</div>
+	</form>
+</div>
+{{end}}
