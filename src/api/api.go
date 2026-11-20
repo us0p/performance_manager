@@ -8,6 +8,9 @@ import (
 	"github.com/danielgtaylor/huma/v2/adapters/humago"
 )
 
+// making each rote a method under `App` is fine for small applications.
+// Must separate into one handler struct per feature, each holding only the use cases
+// it needs as the app increases.
 type App struct {
 	Auth controllers.AuthController
 }

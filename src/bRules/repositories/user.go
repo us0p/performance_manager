@@ -1,3 +1,4 @@
+// repository interfaces should be defined in the use cases layer since that's where they're going to be used.
 package repositories
 
 import (

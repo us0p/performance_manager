@@ -5,6 +5,8 @@ import (
 	brules "performance_manager/src/bRules"
 )
 
+// The controler should take clean inputs and have no reference to frameworks.
+// It must return a presentation of the data ready to be displayed.
 type AuthController struct {
 	AuthUC brules.AuthUC
 }
