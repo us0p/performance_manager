@@ -1,35 +1,21 @@
 package api
 
 import (
-	"context"
-	"github.com/danielgtaylor/huma/v2"
-	"log"
 	"net/http"
 )
 
-var createUserOp = huma.Operation{
-	OperationID: "auth-register",
-	Method:      http.MethodPost,
-	Path:        "/register",
-	Summary:     "Register User",
-	Tags:        []string{"Auth"},
-}
-
-type CreateUserInput struct {
-	Body struct {
-		Email    string `json:"email" example:"mail@example.com"`
-		Name     string `json:"name" example:"John Janes"`
-		Password string `json:"password" example:"a1s2d3f4"`
+func (a App) CreateUserHandler(res http.ResponseWriter, req *http.Request) {
+	if err := req.ParseForm(); err != nil {
+		http.Error(res, "Error extracting form values", http.StatusBadRequest)
+		return
 	}
-}
 
-type CreateUserOutput struct{}
-
-func (a App) CreateUserHandler(ctx context.Context, input *CreateUserInput) (*CreateUserOutput, error) {
-	err := a.Auth.CreateUserController(ctx, input.Body.Email, input.Body.Name, input.Body.Password)
+	err := a.Auth.CreateUserController(req.Context(), req.Form.Get("email"), req.Form.Get("name"), req.Form.Get("password"))
 	if err != nil {
-		log.Println("%s", err)
+		http.Error(res, "validation error", http.StatusConflict)
+		return
 	}
 
-	return &CreateUserOutput{}, nil
+	res.WriteHeader(http.StatusCreated)
+	return
 }

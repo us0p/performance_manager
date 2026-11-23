@@ -1,26 +1,28 @@
 package api
 
 import (
+	"html/template"
 	"net/http"
 	"performance_manager/src/controllers"
-
-	"github.com/danielgtaylor/huma/v2"
-	"github.com/danielgtaylor/huma/v2/adapters/humago"
 )
 
 // making each rote a method under `App` is fine for small applications.
 // Must separate into one handler struct per feature, each holding only the use cases
 // it needs as the app increases.
 type App struct {
-	Auth controllers.AuthController
+	pageTemplates map[string]*template.Template
+	Auth          controllers.AuthController
+}
+
+func NewApp(pageTemplates map[string]*template.Template, authC controllers.AuthController) App {
+	return App{pageTemplates: pageTemplates, Auth: authC}
 }
 
 func (a App) NewAPI() *http.ServeMux {
 	server := http.NewServeMux()
 
-	api := humago.New(server, huma.DefaultConfig("Performance Manager", "0.1.0"))
-
-	huma.Register(api, createUserOp, a.CreateUserHandler)
+	server.HandleFunc("GET /register", a.renderHTMLPage("register.html"))
+	server.HandleFunc("POST /register", a.CreateUserHandler)
 
 	//server.HandleFunc("/register", func(res http.ResponseWriter, req *http.Request) {
 	//	// ExecuteTemplate allow us to select one of the named templates in the template set (in this case we have "index.html" and "register.html").

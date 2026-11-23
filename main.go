@@ -82,7 +82,7 @@ func main() {
 	authC := controllers.AuthController{AuthUC: authUc}
 
 	log.Println("Building App...")
-	app := api.App{Auth: authC}
+	app := api.NewApp(pageTemplates, authC)
 
 	server := app.NewAPI()
 

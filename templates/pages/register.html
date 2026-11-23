@@ -4,7 +4,11 @@
 {{define "body"}}
 <div class="full-screen grid-container grid-container--centralized">
 	<h1 class="title">Sign up for Performance Manager</h1>
-	<form method="post" action="/register" class="form-register">
+	<!-- Browsers and HTMX submit forms as 'application/x-www-form-urlencoded' by default. 
+	     For file uploads: 'enctype="multipart/form-data"' on the form (or hx-encoding="multipart/form-data")
+	-->
+	<form method="post" action="/register" class="form-register" hx-post="/register" hx-target="this"
+		hx-swap="outerHTML">
 		<div class="form-field">
 			<!-- always add id to your input so that you can point the right label to it. The 'for' attribute indicates which input this label is associated with -->
 			<!-- if the user clicks the label, it'll redirect the user cursor to the target input. It improves usability -->
