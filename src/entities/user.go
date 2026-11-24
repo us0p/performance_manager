@@ -1,13 +1,13 @@
 package entities
 
 import (
-	"errors"
 	"regexp"
 )
 
 var (
-	ErrInvalidEmail = errors.New("email is empty")
-	ErrInvalidName = errors.New("name is invalid")
+	hasLower = regexp.MustCompile(`[a-z]+`)
+	hasUpper = regexp.MustCompile(`[A-Z]+`)
+	hasDigit = regexp.MustCompile(`[0-9]+`)
 )
 
 type CreateUser struct {
@@ -24,18 +24,29 @@ func NewCreateUserEnt(email, name, pass string) CreateUser {
 	}
 }
 
-func (cu CreateUser) Validate() []error {
-	errs := make([]error, 0)
+func (cu CreateUser) Validate() error {
+	var err ValidationError
 	if cu.Email == "" {
-		errs = append(errs, ErrInvalidEmail)	
+		err.add("email", "can't be empty")
 	}
 
 	if cu.Name == "" {
-		errs = append(errs, ErrInvalidName)
+		err.add("name", "can't be empty")
 	}
 
-	passREXP := regexp.Compile("a-z+A-Z+0-9+")
-	if cu.Password == "" || len(cu.Password) < 8 || 
+	if !hasLower.Match([]byte(cu.Password)) {
+		err.add("password", "must contain lowercase character")
+	}
+
+	if !hasUpper.Match([]byte(cu.Password)) {
+		err.add("password", "must contain uppercase character")
+	}
+
+	if !hasDigit.Match([]byte(cu.Password)) {
+		err.add("password", "must contain a digit")
+	}
+
+	return err
 }
 
 type User struct {

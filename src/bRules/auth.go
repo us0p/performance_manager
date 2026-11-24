@@ -2,26 +2,34 @@ package brules
 
 import (
 	"context"
-	"errors"
-	"fmt"
+	"performance_manager/src/bRules/interfaces"
 	"performance_manager/src/bRules/repositories"
 	"performance_manager/src/entities"
 )
 
 type AuthUC struct {
-	UsrRp repositories.UserRepo
+	UsrRp  repositories.UserRepo
+	Hasher interfaces.Hasher
 }
 
-var (
-	ErrCreateUser = errors.New("failed to create user")
-)
-
 func (auc AuthUC) AuthCreateUser(ctx context.Context, email, name, pass string) (entities.User, error) {
+	var u entities.User
 	cu := entities.NewCreateUserEnt(email, name, pass)
-	user, err := auc.UsrRp.CreateUser(ctx, cu)
+	err := cu.Validate()
 	if err != nil {
-		return entities.User{}, fmt.Errorf("%w: %w", ErrCreateUser, err)
+		return u, err
 	}
 
-	return user, nil
+	hashedPass, err := auc.Hasher.Hash(cu.Password)
+	if err != nil {
+		return u, err
+	}
+	cu.Password = hashedPass
+
+	u, err = auc.UsrRp.CreateUser(ctx, cu)
+	if err != nil {
+		return u, err
+	}
+
+	return u, nil
 }
